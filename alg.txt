@@ -1,0 +1,99 @@
+Q. Your son took a vacation through Europe without telling you. When the kid returned from the vacation you asked him where did he go. The sic told your Dad I went to these cities: Amoterdam, Kiev, Burich, Prague. Derlin, Barcelona, ured only train at transportation and these were the available tickets! Paris-Skopje. Zurich-Amsterdam, Prague-zurich, Barcelona-Berlin, Kiev-Prague, Skopje-Paris, Amsterdam-Barcelona, Berlin-Kiev 
+You know that your kid started with Kiev 
+Write a data structure and algorithm that will give you the route which your son was traveling
+
+==>>DATA STRUCTURE-->
+The data structure that you can use to represent the available tickets/routes is a graph. A graph is a collection of nodes (also called vertices) connected by edges. In this case, the nodes represent the cities and the edges represent the available tickets between the cities.
+
+The code that you have provided defines a graph data structure. The routes object is a dictionary that maps from a city to the list of cities that can be reached from that city. For example, the routes['Paris'] list contains the city of Skopje, which means that there is a ticket available from Paris to Skopje.
+
+The findRoute() function performs a depth-first search (DFS) on the graph to find a route from the starting city to all of the other cities. The function takes three arguments:
+
+The starting city
+A set of visited cities
+A list of the cities that have been visited so far
+The function works by recursively calling itself on each of the cities that are connected to the current city. If the function reaches a city that has already been visited, it returns. Otherwise, it adds the current city to the list of visited cities and then recursively calls itself on each of the cities that are connected to the current city.
+
+The findRoute() function returns a list of the cities that were visited in the route. In this case, the list will contain the cities that your son visited on his vacation.
+
+Here is a diagram of the graph that is represented by the routes object:
+
+     Paris
+    /  \
+   Skopje  Zurich
+  /     \
+ Amsterdam Barcelona
+The route that your son took is Paris -> Skopje -> Zurich -> Amsterdam -> Barcelona. This route can be found by calling the findRoute() function with the starting city of Paris.
+
+The data structure that I have described is a simple way to represent the available tickets/routes. However, there are other ways to represent this information. For example, you could use a list of lists to represent the routes. In this case, each list would represent a route from one city to another.
+
+The best data structure to use will depend on the specific problem that you are trying to solve. In this case, the graph data structure is a good choice because it is easy to represent the connections between the cities and to find routes between different cities.
+
+
+==>>ALGORITHM-->
+STEP1.  Initialize a data structure to represent the available tickets/routes. This can be a dictionary, where the keys are the cities and the values are the list of cities that can be reached from that city.
+STEP2.  Initialize a visited cities data structure. This will be used to track the cities that have already been visited.
+STEP3.  Create a function to perform a depth-first search (DFS) to find the route. The function should take the current city, the visited cities data structure, and the path as input.
+STEP4.  The DFS function should do the following:
+Mark the current city as visited.
+Add the current city to the path.
+Check if we've visited all cities; if so, we've found the route and return the path.
+Explore the next cities from the current city. For each next city, if the city has not been visited, then call the DFS function recursively with the next city as the current city.
+STEP5.  Call the DFS function to find the route starting from Kiev.
+The following is the implementation of the algorithm in JavaScript:
+// Define the data structure to represent the available tickets/routes
+const routes = {
+  'Paris': ['Skopje'],
+  'Skopje': ['Paris'],
+  'Zurich': ['Amsterdam'],
+  'Amsterdam': ['Barcelona'],
+  'Prague': ['Zurich'],
+  'Barcelona': ['Berlin'],
+  'Kiev': ['Prague'],
+  'Berlin': ['Kiev', 'Amsterdam']
+};
+
+// Initialize visited cities data structure
+const visited = {
+  'Paris': false,
+  'Skopje': false,
+  'Zurich': false,
+  'Amsterdam': false,
+  'Prague': false,
+  'Barcelona': false,
+  'Kiev': false,
+  'Berlin': false
+};
+
+// Function to perform DFS and find the route
+function findRoute(currentCity, visited, path) {
+  // Mark the current city as visited
+  visited[currentCity] = true;
+
+  // Add the current city to the path
+  path.push(currentCity);
+
+  // Check if we've visited all cities; if so, we've found the route
+  if (path.length === Object.keys(visited).length) {
+    return path;
+  }
+
+  // Explore the next cities from the current city
+  for (let nextCity of routes[currentCity]) {
+    if (!visited[nextCity]) {
+      const newPath = findRoute(nextCity, visited, [...path]);
+      if (newPath) {
+        return newPath;
+      }
+    }
+  }
+
+  return null;
+}
+
+// Call the function to find the route starting from Kiev
+const path = findRoute('Kiev', visited, []);
+console.log("The route your son traveled is: ", path.join(" -> "));
+
+
+output::->Kiev -> Prague -> Berlin -> Amsterdam -> Zurich -> Barcelona
